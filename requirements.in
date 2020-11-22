@@ -1,0 +1,10 @@
+numpy
+networkx
+matplotlib
+
+jedi
+ipython
+black
+rope
+flake8
+pytest
