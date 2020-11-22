@@ -8,30 +8,22 @@ import sys
 from collections import defaultdict
 from os import path
 
-
-def isint(thing):
-    try:
-        int(thing)
-    except ValueError:
-        return False
-    else:
-        return True
-
-
 here = path.dirname(__file__)
 days = set()
 day_parts = defaultdict(set)
+day_re = re.compile(r"^day(\d+)$")
 
 with os.scandir(path.join(here, "days")) as it:
     for entry in it:
-        if not entry.is_dir() or not isint(entry.name):
+        match = day_re.fullmatch(entry.name)
+        if not entry.is_dir() or not match:
             continue
-        days.add(int(entry.name))
+        days.add(int(match[1]))
 
 part_re = re.compile(r"^part([12])$")
 
 for day in days:
-    with os.scandir(path.join(here, "days", str(day))) as it:
+    with os.scandir(path.join(here, "days", f"day{day}")) as it:
         for entry in it:
             if not entry.is_file():
                 continue
@@ -86,11 +78,12 @@ os.environ.setdefault("PYTHONPATH", here)
 if args.test:
     import pytest
 
-    files = [
-        path.join(here, "days", str(day), f"test_part{part}{os.extsep}py")
-        for day, part in solutions
-    ]
-    pytest.main(list(filter(os.path.exists, files)))
+    pytest_args = []
+    for day, part in solutions:
+        if path.exists(path.join("days", f"day{day}", f"test_part{part}")):
+            pytest_args.append(f"days.day{day}.test_part{part}")
+
+    pytest.main(pytest_args)
 else:
     start = True
     for day, part in solutions:
@@ -103,7 +96,8 @@ else:
             subprocess.run(
                 [
                     "python",
-                    path.join(here, "days", str(day), f"part{part}{os.extsep}py"),
+                    "-m",
+                    f"days.day{day}.part{part}",
                 ],
                 check=True,
             )
