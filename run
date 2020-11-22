@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 from collections import defaultdict
@@ -27,15 +28,18 @@ with os.scandir(path.join(here, "days")) as it:
             continue
         days.add(int(entry.name))
 
+part_re = re.compile(r"^part([12])$")
+
 for day in days:
     with os.scandir(path.join(here, "days", str(day))) as it:
         for entry in it:
             if not entry.is_file():
                 continue
             name, ext = path.splitext(entry.name)
-            if not isint(name) or ext != ".py":
+            match = part_re.fullmatch(name)
+            if not match or ext != ".py":
                 continue
-            day_parts[day].add(int(name))
+            day_parts[day].add(int(match[1]))
 
 argparser = argparse.ArgumentParser()
 group = argparser.add_argument_group()
@@ -64,16 +68,12 @@ argparser.add_argument(
     help="Run the tests for the selected days and parts.",
     action="store_true",
 )
-argparser.add_argument(
-    "--pypy",
-    default=False,
-    help="Run the solution using pypy",
-    action="store_true",
-)
 args = argparser.parse_args()
 
 if args.day is not None and args.part is not None:
     solutions = [(args.day, args.part)]
+elif args.day is not None:
+    solutions = [(args.day, p) for p in day_parts[args.day]]
 else:
     solutions = [
         (day, part)
@@ -86,12 +86,11 @@ os.environ.setdefault("PYTHONPATH", here)
 if args.test:
     import pytest
 
-    pytest.main(
-        [
-            path.join(here, "days", str(day), f"test_{part}{os.extsep}py")
-            for day, part in solutions
-        ]
-    )
+    files = [
+        path.join(here, "days", str(day), f"test_part{part}{os.extsep}py")
+        for day, part in solutions
+    ]
+    pytest.main(list(filter(os.path.exists, files)))
 else:
     start = True
     for day, part in solutions:
@@ -103,8 +102,8 @@ else:
         try:
             subprocess.run(
                 [
-                    "pypy" if args.pypy else "python",
-                    path.join(here, "days", str(day), f"{part}{os.extsep}py"),
+                    "python",
+                    path.join(here, "days", str(day), f"part{part}{os.extsep}py"),
                 ],
                 check=True,
             )
