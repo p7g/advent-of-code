@@ -81,6 +81,7 @@ else:
         for part in (sorted(day_parts[day]) if args.part is None else [args.part])
     ]
 
+os.environ.setdefault("PYTHONPATH", here)
 
 if args.test:
     import pytest
