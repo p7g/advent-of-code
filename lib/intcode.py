@@ -1,4 +1,5 @@
 import enum
+from collections import ChainMap, defaultdict
 from .digits import digits, undigits
 
 
@@ -11,6 +12,7 @@ class Op(enum.Enum):
     JZ = 6
     LT = 7
     EQ = 8
+    ADJREL = 9
     HALT = 99
 
     @property
@@ -19,7 +21,7 @@ class Op(enum.Enum):
             return 3
         if self in (self.JNZ, self.JZ):
             return 2
-        if self in (self.INPUT, self.OUTPUT):
+        if self in (self.INPUT, self.OUTPUT, self.ADJREL):
             return 1
         if self is self.HALT:
             return 0
@@ -28,13 +30,15 @@ class Op(enum.Enum):
 class ParamMode(enum.Enum):
     POSITION = 0
     IMMEDIATE = 1
+    RELATIVE = 2
 
 
 class IntCodeVM:
     _NOTHING = object()
 
     def __init__(self, code):
-        self.memory = list(code)
+        self.memory = ChainMap(dict(enumerate(code)), defaultdict(lambda: 0))
+        self.relative_base = 0
 
     @classmethod
     def from_str(cls, code_raw):
@@ -46,13 +50,18 @@ class IntCodeVM:
         digits.extend([0] * (3 - len(digits)))
 
         def _getset_param(n, val=self._NOTHING):
-            mode = ParamMode(digits[n - i - 1])
+            mode = ParamMode(digits[n])
+            idx = self.memory[i + n + 1]
             if val is self._NOTHING:
                 if mode is ParamMode.IMMEDIATE:
-                    return self.memory[n]
-                return self.memory[self.memory[n]]
+                    return idx
+                elif mode is ParamMode.POSITION:
+                    return self.memory[idx]
+                return self.memory[self.relative_base + idx]
             elif mode is ParamMode.POSITION:
-                self.memory[self.memory[n]] = val
+                self.memory[idx] = val
+            elif mode is ParamMode.RELATIVE:
+                self.memory[self.relative_base + idx] = val
             else:
                 raise ValueError("Can't set immediate param")
 
@@ -70,27 +79,28 @@ class IntCodeVM:
             if opcode is Op.HALT:
                 break
             elif opcode is Op.ADD:
-                param(i + 3, param(i + 1) + param(i + 2))
+                param(2, param(0) + param(1))
             elif opcode is Op.MUL:
-                param(i + 3, param(i + 1) * param(i + 2))
+                param(2, param(0) * param(1))
             elif opcode is Op.INPUT:
                 val = int((yield))
-                out = mem[i + 1]
-                mem[out] = val
+                param(0, val)
             elif opcode is Op.OUTPUT:
-                yield param(i + 1)
+                yield param(0)
             elif opcode is Op.JNZ:
-                if param(i + 1) != 0:
-                    i = param(i + 2)
+                if param(0) != 0:
+                    i = param(1)
                     continue
             elif opcode is Op.JZ:
-                if param(i + 1) == 0:
-                    i = param(i + 2)
+                if param(0) == 0:
+                    i = param(1)
                     continue
             elif opcode is Op.LT:
-                param(i + 3, int(param(i + 1) < param(i + 2)))
+                param(2, int(param(0) < param(1)))
             elif opcode is Op.EQ:
-                param(i + 3, int(param(i + 1) == param(i + 2)))
+                param(2, int(param(0) == param(1)))
+            elif opcode is Op.ADJREL:
+                self.relative_base += param(0)
             else:
                 raise NotImplementedError(opcode)
 
