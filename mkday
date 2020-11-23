@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import os
+import sys
+from os import path
+
+if len(sys.argv) < 2:
+    print("Expected day number", file=sys.stderr)
+    sys.exit(1)
+
+n = int(sys.argv[1])
+here = path.dirname(__file__)
+day_path = path.join(here, "days", f"day{n}")
+os.mkdir(day_path)
+
+
+def mkfile(name, content=""):
+    with open(path.join(day_path, name), "w+") as f:
+        f.write(content)
+
+
+for name in ["__init__.py", "part1.py", "part2.py", "test_part1.py", "test_part2.py"]:
+    mkfile(name)
