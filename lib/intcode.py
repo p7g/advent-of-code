@@ -62,7 +62,7 @@ class IntCodeVM:
         mem = self.memory
         i = 0
 
-        while True:
+        while i < len(mem):
             instr = digits(mem[i])
             opcode = Op(undigits(instr[-2:]))
             param = self._parse_params(i, instr[:-2])
