@@ -80,10 +80,12 @@ if args.test:
 
     pytest_args = []
     for day, part in solutions:
-        if path.exists(path.join("days", f"day{day}", f"test_part{part}")):
-            pytest_args.append(f"days.day{day}.test_part{part}")
+        fname = path.join("days", f"day{day}", f"test_part{part}.py")
+        if path.exists(fname):
+            pytest_args.append(fname)
 
-    pytest.main(pytest_args)
+    if pytest_args:
+        pytest.main(pytest_args)
 else:
     start = True
     for day, part in solutions:
