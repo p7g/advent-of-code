@@ -1,6 +1,4 @@
 import enum
-from collections import ChainMap, defaultdict
-from .digits import digits, undigits
 
 
 class Op(enum.Enum):
@@ -37,30 +35,39 @@ class IntCodeVM:
     _NOTHING = object()
 
     def __init__(self, code):
-        self.memory = ChainMap(dict(enumerate(code)), defaultdict(lambda: 0))
+        self.memory = list(code)
         self.relative_base = 0
 
     @classmethod
     def from_str(cls, code_raw):
         return cls(map(int, code_raw.strip().split(",")))
 
-    def _parse_params(self, i, digits):
-        digits = list(map(ParamMode, digits))
-        digits.reverse()
-        digits.extend([0] * (3 - len(digits)))
+    def _ensure_mem(self, idx):
+        mem = self.memory
+        memlen = len(mem)
+        if idx >= memlen:
+            mem.extend([0] * (idx - (memlen - 1)))
 
+    def _parse_params(self, i, modes):
         def _getset_param(n, val=self._NOTHING):
-            mode = ParamMode(digits[n])
+            if modes < 10 ** n:
+                mode = ParamMode.POSITION
+            else:
+                mode = ParamMode((modes % 10 ** (n + 1)) // 10 ** n)
             idx = self.memory[i + n + 1]
             if val is self._NOTHING:
                 if mode is ParamMode.IMMEDIATE:
                     return idx
                 elif mode is ParamMode.POSITION:
+                    self._ensure_mem(idx)
                     return self.memory[idx]
+                self._ensure_mem(self.relative_base + idx)
                 return self.memory[self.relative_base + idx]
             elif mode is ParamMode.POSITION:
+                self._ensure_mem(idx)
                 self.memory[idx] = val
             elif mode is ParamMode.RELATIVE:
+                self._ensure_mem(self.relative_base + idx)
                 self.memory[self.relative_base + idx] = val
             else:
                 raise ValueError("Can't set immediate param")
@@ -72,9 +79,9 @@ class IntCodeVM:
         i = 0
 
         while i < len(mem):
-            instr = digits(mem[i])
-            opcode = Op(undigits(instr[-2:]))
-            param = self._parse_params(i, instr[:-2])
+            instr = mem[i]
+            opcode = Op(instr % 100)
+            param = self._parse_params(i, instr // 100)
 
             if opcode is Op.HALT:
                 break
