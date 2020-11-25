@@ -19,5 +19,13 @@ def mkfile(name, content=""):
         f.write(content)
 
 
-for name in ["__init__.py", "part1.py", "part2.py", "test_part1.py", "test_part2.py"]:
+for name in [
+    "__init__.py",
+    "part1.py",
+    "part2.py",
+    "test_part1.py",
+    "test_part2.py",
+    f"day{n}lib.py",
+    "input.txt",
+]:
     mkfile(name)
