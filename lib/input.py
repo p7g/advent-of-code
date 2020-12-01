@@ -1,14 +1,20 @@
-def get_input(split_lines=False, line_transform=None):
-    import inspect
-    from pathlib import Path
+import inspect
+from pathlib import Path
 
-    last_frame = inspect.stack()[1]
-    module = inspect.getmodule(last_frame[0])
+
+def _get_input(nth_frame):
+    frame = inspect.stack()[nth_frame]
+    module = inspect.getmodule(frame[0])
     input_path = Path(module.__file__).parent / "input.txt"
     with open(input_path, "r") as f:
-        content = f.read().strip()
-        if split_lines:
-            content = content.splitlines()
-        if line_transform is not None:
-            content = [line_transform(line) for line in content]
-        return content
+        return f.read()
+
+
+def get_input(strip=True):
+    content = _get_input(1)
+    return content.strip() if strip else content
+
+
+def get_input_lines(strip=True):
+    lines = _get_input(1).splitlines()
+    return [l.strip() for l in lines] if strip else lines
