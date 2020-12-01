@@ -3,3 +3,6 @@ networkx
 matplotlib
 patina
 pytest
+
+python-dotenv
+requests

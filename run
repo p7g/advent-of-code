@@ -94,6 +94,8 @@ else:
         else:
             print()
         print(f"Day {day} part {part}:\n")
+        os.environ["DAY"] = str(day)
+        os.environ["PART"] = str(part)
         try:
             subprocess.run(
                 [
