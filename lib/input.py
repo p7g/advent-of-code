@@ -11,10 +11,10 @@ def _get_input(nth_frame):
 
 
 def get_input(strip=True):
-    content = _get_input(1)
+    content = _get_input(2)
     return content.strip() if strip else content
 
 
 def get_input_lines(strip=True):
-    lines = _get_input(1).splitlines()
+    lines = _get_input(2).splitlines()
     return [l.strip() for l in lines] if strip else lines
