@@ -34,3 +34,19 @@ def fetch(day=default_day):
     )
     r.raise_for_status()
     return r.content.decode("ascii")
+
+
+def fetch_lines(day=default_day):
+    return fetch(day).strip().splitlines()
+
+
+def fetch_int_lines(day=default_day):
+    return list(map(int, fetch_lines(day)))
+
+
+def fetch_commasep(day=default_day):
+    return fetch(day).strip().split(",")
+
+
+def fetch_int_commasep(day=default_day):
+    return list(map(int, fetch_commasep(day)))
