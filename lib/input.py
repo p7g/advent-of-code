@@ -28,12 +28,20 @@ def fetch(day=default_day):
     import os
     import requests
 
+    input_path = Path(__file__).parent.parent / "days" / f"day{day}" / "input.txt"
+    if input_path.exists():
+        with open(input_path, "r") as f:
+            return f.read()
+
     r = requests.get(
         f"https://adventofcode.com/{YEAR}/day/{day}/input",
         cookies={"session": os.environ["AOC_SESSION"]},
     )
     r.raise_for_status()
-    return r.content.decode("ascii")
+    content = r.content.decode("ascii")
+    with open(input_path, "w") as f:
+        f.write(content)
+    return content
 
 
 def fetch_lines(day=default_day):
