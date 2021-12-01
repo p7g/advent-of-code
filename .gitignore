@@ -1,2 +1,6 @@
 **/__pycache__
 .env
+.aoc-session
+.aoc-cache
+_env
+.mypy_cache

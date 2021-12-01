@@ -1,8 +1,6 @@
-numpy
-networkx
 matplotlib
+networkx
+numpy
 patina
 pytest
-
-python-dotenv
 requests
