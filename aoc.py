@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
 import datetime as dt
 import os
 import networkx as nx
@@ -84,7 +88,7 @@ __all__ = [  # noqa
 ]
 
 
-def __getattr__(name: str) -> "t.Any":
+def __getattr__(name: str) -> t.Any:
     if name == "data":
         return _fetch_input_cached(_get_challenge_date())
     else:
@@ -100,7 +104,7 @@ def _main() -> None:
     exec(code, {}, {})
 
 
-def _challenge_script_name(date: "dt.date") -> str:
+def _challenge_script_name(date: dt.date) -> str:
     from pathlib import Path
 
     return str(Path(__file__).parent / "days" / f"day{date.day}.py")
@@ -111,7 +115,7 @@ def _read_session() -> str:
         return f.read().strip()
 
 
-def _get_challenge_date() -> "dt.date":
+def _get_challenge_date() -> dt.date:
     import datetime as dt
     import os
 
@@ -122,7 +126,7 @@ def _get_challenge_date() -> "dt.date":
     return dt.date(year=year, month=12, day=day)
 
 
-def _fetch_input_cached(date: "dt.date") -> str:
+def _fetch_input_cached(date: dt.date) -> str:
     try:
         with open(_input_cache_path(date), "r") as f:
             return f.read().strip()
@@ -132,7 +136,7 @@ def _fetch_input_cached(date: "dt.date") -> str:
         return input_data
 
 
-def _input_cache_path(date: "dt.date") -> str:
+def _input_cache_path(date: dt.date) -> str:
     from pathlib import Path
 
     cache_dir = Path(__file__).parent / ".aoc-cache"
@@ -141,7 +145,7 @@ def _input_cache_path(date: "dt.date") -> str:
     return str(cache_dir / f"{date.year}-{date.day}.txt")
 
 
-def _fetch_input(date: "dt.date") -> str:
+def _fetch_input(date: dt.date) -> str:
     import requests
 
     req = requests.get(
@@ -152,7 +156,7 @@ def _fetch_input(date: "dt.date") -> str:
     return req.content.decode("ascii")
 
 
-def _cache_input(date: "dt.date", aoc_input: str) -> None:
+def _cache_input(date: dt.date, aoc_input: str) -> None:
     with open(_input_cache_path(date), "w") as f:
         f.write(aoc_input)
 
