@@ -107,7 +107,7 @@ def _main() -> None:
 def _challenge_script_name(date: dt.date) -> str:
     from pathlib import Path
 
-    return str(Path(__file__).parent / "days" / f"day{date.day}.py")
+    return str(Path(__file__).parent / f"{date.day:02}.py")
 
 
 def _read_session() -> str:
