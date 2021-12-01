@@ -131,9 +131,10 @@ def _fetch_input_cached(date: dt.date) -> str:
         with open(_input_cache_path(date), "r") as f:
             return f.read().strip()
     except FileNotFoundError:
-        input_data = _fetch_input(date)
-        _cache_input(date, input_data)
-        return input_data
+        pass
+    input_data = _fetch_input(date)
+    _cache_input(date, input_data)
+    return input_data
 
 
 def _input_cache_path(date: dt.date) -> str:
