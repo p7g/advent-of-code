@@ -1,4 +1,5 @@
 matplotlib
+more-itertools
 networkx
 numpy
 patina

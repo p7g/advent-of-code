@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import datetime as dt
 import os
+import more_itertools as it
 import networkx as nx
 import numpy as np
+import operator as op
 import re
 import sys
 import typing as t
@@ -63,12 +65,14 @@ __all__ = [  # noqa
     "floordiv",
     "gcd",
     "hypot",
+    "it",
     "itemgetter",
     "methodcaller",
     "mod",
     "mul",
     "np",
     "nx",
+    "op",
     "or_",
     "os",
     "partial",
