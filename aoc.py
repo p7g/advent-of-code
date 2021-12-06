@@ -11,11 +11,11 @@ import operator as op
 import re
 import sys
 import typing as t
-from collections import ChainMap, Counter, defaultdict, deque
+from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from dataclasses import dataclass
 from enum import Enum
 from functools import partial, reduce
-from itertools import chain, combinations, count, cycle, permutations, product, repeat
+from itertools import chain, combinations, count, cycle, permutations, product, repeat, zip_longest
 from math import ceil, cos, cosh, dist, floor, gcd, hypot, sin, sinh, tan, tanh
 from operator import (
     add,
@@ -70,6 +70,7 @@ __all__ = [  # noqa
     "methodcaller",
     "mod",
     "mul",
+    "namedtuple",
     "np",
     "nx",
     "op",
@@ -89,6 +90,7 @@ __all__ = [  # noqa
     "tanh",
     "truediv",
     "xor",
+    "zip_longest",
 ]
 
 
