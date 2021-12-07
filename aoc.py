@@ -5,8 +5,6 @@ from __future__ import annotations
 import datetime as dt
 import os
 import more_itertools as it
-import networkx as nx
-import numpy as np
 import operator as op
 import re
 import sys
@@ -71,8 +69,6 @@ __all__ = [  # noqa
     "mod",
     "mul",
     "namedtuple",
-    "np",
-    "nx",
     "op",
     "or_",
     "os",
