@@ -30,6 +30,10 @@ from operator import (
     xor,
 )
 from patina import Err, None_, Ok, Option, Result, Some
+from pyrsistent import freeze, pbag, pdeque, pmap, pset, pvector, thaw
+
+if t.TYPE_CHECKING:
+    import datetime as dt
 
 
 data: str
@@ -62,6 +66,7 @@ __all__ = [  # noqa
     "dist",
     "floor",
     "floordiv",
+    "freeze",
     "gcd",
     "hypot",
     "it",
@@ -74,8 +79,13 @@ __all__ = [  # noqa
     "or_",
     "os",
     "partial",
+    "pbag",
+    "pdeque",
     "permutations",
+    "pmap",
     "product",
+    "pset",
+    "pvector",
     "re",
     "reduce",
     "repeat",
@@ -85,6 +95,7 @@ __all__ = [  # noqa
     "sys",
     "tan",
     "tanh",
+    "thaw",
     "truediv",
     "xor",
     "zip_longest",

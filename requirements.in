@@ -3,5 +3,6 @@ more-itertools
 networkx
 numpy
 patina
+pyrsistent
 pytest
 requests
