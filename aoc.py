@@ -11,9 +11,9 @@ import typing as t
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from dataclasses import dataclass
 from enum import Enum
-from functools import cache, partial, reduce
+from functools import lru_cache, partial, reduce
 from itertools import chain, combinations, count, cycle, permutations, product, repeat, zip_longest
-from math import ceil, cos, cosh, dist, floor, gcd, hypot, sin, sinh, tan, tanh
+from math import ceil, cos, cosh, floor, gcd, hypot, sin, sinh, tan, tanh
 from operator import (
     add,
     and_,
@@ -33,6 +33,18 @@ from pyrsistent import freeze, pbag, pdeque, pmap, pset, pvector, thaw
 
 if t.TYPE_CHECKING:
     import datetime as dt
+
+try:
+    from math import dist
+except ImportError:
+    def dist(ns):
+        raise NotImplementedError
+
+try:
+    from functools import cache
+except ImportError:
+    def cache(fn):
+        return lru_cache(None)(fn)
 
 
 data: str
