@@ -100,6 +100,7 @@ __all__ = [  # noqa
     "re",
     "reduce",
     "repeat",
+    "sign",
     "sin",
     "sinh",
     "sub",
@@ -111,6 +112,12 @@ __all__ = [  # noqa
     "xor",
     "zip_longest",
 ]
+
+
+def sign(n):
+    if n == 0:
+        return 0
+    return 1 if n > 0 else -1
 
 
 def __getattr__(name: str) -> t.Any:
