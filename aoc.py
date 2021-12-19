@@ -12,7 +12,17 @@ from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache, partial, reduce
-from itertools import chain, combinations, count, cycle, permutations, product, repeat, zip_longest
+from itertools import (
+    chain,
+    combinations,
+    count,
+    cycle,
+    islice,
+    permutations,
+    product,
+    repeat,
+    zip_longest,
+)
 from math import ceil, cos, cosh, floor, gcd, hypot, sin, sinh, tan, tanh
 from operator import (
     add,
@@ -37,12 +47,15 @@ if t.TYPE_CHECKING:
 try:
     from math import dist
 except ImportError:
+
     def dist(ns):
         raise NotImplementedError
+
 
 try:
     from functools import cache
 except ImportError:
+
     def cache(fn):
         return lru_cache(None)(fn)
 
@@ -80,6 +93,7 @@ __all__ = [  # noqa
     "freeze",
     "gcd",
     "hypot",
+    "islice",
     "it",
     "itemgetter",
     "methodcaller",
@@ -105,6 +119,7 @@ __all__ = [  # noqa
     "sinh",
     "sub",
     "sys",
+    "t",
     "tan",
     "tanh",
     "thaw",
