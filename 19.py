@@ -19,8 +19,6 @@ all_orientations: t.Sequence[Orientation] = list(
     for o in product(product((1, -1), repeat=3), permutations(range(3), 3))
 )
 
-T = t.TypeVar("T")
-
 
 def negate_point(p):
     return -p[0], -p[1], -p[2]
