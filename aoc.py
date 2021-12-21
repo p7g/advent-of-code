@@ -12,6 +12,7 @@ from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache, partial, reduce
+from heapq import heapify, heappop, heappush, heappushpop, heapreplace
 from itertools import (
     chain,
     combinations,
@@ -92,6 +93,11 @@ __all__ = [  # noqa
     "floordiv",
     "freeze",
     "gcd",
+    "heapify",
+    "heappop",
+    "heappush",
+    "heappushpop",
+    "heapreplace",
     "hypot",
     "islice",
     "it",
