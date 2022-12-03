@@ -1,5 +1,4 @@
 from aoc import *
-import string
 
 bags = [(s[:len(s)//2], s[len(s)//2:]) for s in data.splitlines()]
 priority = dict(zip(chain(string.ascii_lowercase, string.ascii_uppercase), count(1)))

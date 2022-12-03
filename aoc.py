@@ -7,6 +7,7 @@ import os
 import more_itertools as it
 import operator as op
 import re
+import string
 import sys
 import typing as t
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
@@ -125,6 +126,7 @@ __all__ = [  # noqa
     "sign",
     "sin",
     "sinh",
+    "string",
     "sub",
     "sys",
     "t",
