@@ -225,7 +225,7 @@ def _get_challenge_date() -> dt.date:
 def _fetch_input_cached(date: dt.date) -> str:
     try:
         with open(_input_cache_path(date), "r") as f:
-            return f.read().strip()
+            return f.read().strip("\r\n")
     except FileNotFoundError:
         pass
     input_data = _fetch_input(date)
