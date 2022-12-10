@@ -21,19 +21,18 @@ for cycle in count(1):
         assert cycle <= 220
         ss += cycle * X
 
-    working_on = in_progress.take()
-    if working_on.is_some():
-        op, arg = working_on.unwrap()
-        assert op == "addx"
-        X += arg
-    else:
-        instr = instrs.pop()
+    match in_progress.take():
+        case Some((op, arg)):
+            assert op == "addx"
+            X += arg
+        case _:
+            instr = instrs.pop()
 
-        if instr == "noop":
-            continue
+            if instr == "noop":
+                continue
 
-        op, arg = instr.split(" ")
-        assert op == "addx"
-        in_progress.replace((op, int(arg)))
+            op, arg = instr.split(" ")
+            assert op == "addx"
+            in_progress.replace((op, int(arg)))
 
 print(ss)
