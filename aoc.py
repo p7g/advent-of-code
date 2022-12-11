@@ -26,7 +26,7 @@ from itertools import (
     repeat,
     zip_longest,
 )
-from math import ceil, cos, cosh, floor, gcd, hypot, sin, sinh, tan, tanh
+from math import ceil, cos, cosh, floor, gcd, hypot, lcm, sin, sinh, tan, tanh
 from more_itertools import (
     chunked,
     first,
@@ -131,6 +131,7 @@ __all__ = [  # noqa
     "itemgetter",
     "iterate",
     "last",
+    "lcm",
     "mark_ends",
     "methodcaller",
     "minmax",
