@@ -13,7 +13,7 @@ import typing as t
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from dataclasses import dataclass
 from enum import Enum
-from functools import lru_cache, partial, reduce, total_ordering
+from functools import cmp_to_key, lru_cache, partial, reduce, total_ordering
 from heapq import heapify, heappop, heappush, heappushpop, heapreplace
 from itertools import (
     chain,
@@ -102,6 +102,7 @@ __all__ = [  # noqa
     "ceil",
     "chain",
     "chunked",
+    "cmp_to_key",
     "combinations",
     "cos",
     "cosh",
