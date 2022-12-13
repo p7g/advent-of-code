@@ -154,6 +154,7 @@ __all__ = [  # noqa
     "pmap",
     "product",
     "pset",
+    "pts",
     "pvector",
     "re",
     "reduce",
@@ -173,6 +174,7 @@ __all__ = [  # noqa
     "total_ordering",
     "triplewise",
     "truediv",
+    "wh",
     "windowed",
     "xor",
     "zip_longest",
@@ -183,6 +185,44 @@ def sign(n):
     if n == 0:
         return 0
     return 1 if n > 0 else -1
+
+
+def wh(grid: list[list[t.Any]]) -> tuple[int, int]:
+    return len(grid[0]), len(grid)
+
+
+T = t.TypeVar("T")
+
+
+def pts(grid: list[list[T]]) -> t.Iterator[tuple["Pt", T]]:
+    w, h = wh(grid)
+    for y, x in product(range(h), range(w)):
+        p = Pt(x, y)
+        yield p, p.get(grid)
+
+
+class Pt(t.NamedTuple):
+    x: int
+    y: int
+
+    def __add__(self, b) -> Pt:
+        if not isinstance(b, (Pt, tuple)):
+            return NotImplemented
+        (ax, ay), (bx, by) = self, b
+        return Pt(ax + bx, ay + by)
+
+    def get(self, grid: list[list[T]]) -> T:
+        return grid[self.y][self.x]
+
+    def inbound(self, bound: tuple[int, int]) -> bool:
+        x, y = self
+        return 0 <= x < bound[0] and 0 <= y < bound[1]
+
+    def nbrs4(self, bound: tuple[int, int] | None = None) -> t.Iterator[Pt]:
+        for p in [self + (-1, 0), self + (0, 1), self + (1, 0), self + (0, -1)]:
+            if bound and not p.inbound(bound):
+                continue
+            yield p
 
 
 def __getattr__(name: str) -> t.Any:
