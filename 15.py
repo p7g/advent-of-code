@@ -12,11 +12,7 @@ for line in data.splitlines():
     beacons.add(beacon)
     closest_beacon[sensor] = beacon
 
-minx, maxx = minmax(x for x, y in chain(sensors, beacons))
-miny, maxy = minmax(y for x, y in chain(sensors, beacons))
-
 y = 2_000_000
-covers_y = set()
 covered = set()
 for sensor in sensors:
     beacon = closest_beacon[sensor]
