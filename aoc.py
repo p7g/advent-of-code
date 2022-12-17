@@ -26,7 +26,7 @@ from itertools import (
     repeat,
     zip_longest,
 )
-from math import ceil, cos, cosh, floor, gcd, hypot, lcm, sin, sinh, tan, tanh
+from math import ceil, cos, cosh, floor, gcd, hypot, sin, sinh, tan, tanh
 from more_itertools import (
     chunked,
     first,
@@ -74,6 +74,12 @@ except ImportError:
     def dist(ns):
         raise NotImplementedError
 
+try:
+	from math import lcm
+except ImportError:
+
+	def lcm(*integers: t.SupportsIndex) -> int:
+		return abs(reduce(op.mul, integers)) // gcd(*integers)
 
 try:
     from functools import cache
