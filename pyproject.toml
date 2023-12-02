@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "aoc"
+version = "0.1.0"
+description = ""
+authors = ["Patrick Gingras <775.pg.12@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+matplotlib = "^3.8.2"
+more-itertools = "^10.1.0"
+networkx = "^3.2.1"
+numpy = "^1.26.2"
+patina = "^0.5.0"
+pyrsistent = "^0.20.0"
+pytest = "^7.4.3"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
