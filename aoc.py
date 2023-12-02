@@ -75,11 +75,11 @@ except ImportError:
         raise NotImplementedError
 
 try:
-	from math import lcm
+    from math import lcm
 except ImportError:
 
-	def lcm(*integers: t.SupportsIndex) -> int:
-		return abs(reduce(op.mul, integers)) // gcd(*integers)
+    def lcm(*integers: t.SupportsIndex) -> int:
+        return abs(reduce(op.mul, integers)) // gcd(*integers)
 
 try:
     from functools import cache
