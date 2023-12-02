@@ -1,10 +1,11 @@
 # Advent of code solutions
 
-This branch has solutions for 2022, for other years see the other branches:
+This branch has solutions for 2023, for other years see the other branches:
 
-- [2021](https://github.com/p7g/advent-of-code-2020/tree/2021)
-- [2020](https://github.com/p7g/advent-of-code-2020/tree/2020)
-- [2019](https://github.com/p7g/advent-of-code-2020/tree/2019)
+- [2022](https://github.com/p7g/advent-of-code/tree/2022)
+- [2021](https://github.com/p7g/advent-of-code/tree/2021)
+- [2020](https://github.com/p7g/advent-of-code/tree/2020)
+- [2019](https://github.com/p7g/advent-of-code/tree/2019)
 
 ## Instructions if you wanna use aoc.py
 
