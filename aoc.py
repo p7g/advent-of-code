@@ -11,6 +11,7 @@ import string
 import sys
 import typing as t
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
+from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import Enum
 from functools import cmp_to_key, lru_cache, partial, reduce, total_ordering
@@ -66,6 +67,7 @@ from pyrsistent import freeze, pbag, pdeque, pmap, pset, pvector, thaw
 
 if t.TYPE_CHECKING:
     import datetime as dt
+    import networkx as nx
 
 try:
     from math import dist
@@ -74,12 +76,14 @@ except ImportError:
     def dist(ns):
         raise NotImplementedError
 
+
 try:
     from math import lcm
 except ImportError:
 
     def lcm(*integers: t.SupportsIndex) -> int:
         return abs(reduce(op.mul, integers)) // gcd(*integers)
+
 
 try:
     from functools import cache
@@ -126,6 +130,7 @@ __all__ = [  # noqa
     "floordiv",
     "freeze",
     "gcd",
+    "grid_2d_graph_diag",
     "heapify",
     "heappop",
     "heappush",
@@ -194,14 +199,26 @@ def sign(n):
     return 1 if n > 0 else -1
 
 
-def wh(grid: list[list[t.Any]]) -> tuple[int, int]:
+def wh(grid: Sequence[Sequence[t.Any]]) -> tuple[int, int]:
     return len(grid[0]), len(grid)
+
+
+def grid_2d_graph_diag(w: int, h: int) -> "nx.Graph":
+    import networkx as nx
+
+    G = nx.grid_2d_graph(w, h)
+    G.add_edges_from(
+        [((x, y), (x + 1, y + 1)) for x in range(w - 1) for y in range(h - 1)]
+        + [((x + 1, y), (x, y + 1)) for x in range(w - 1) for y in range(h - 1)]
+    )
+
+    return G
 
 
 T = t.TypeVar("T")
 
 
-def pts(grid: list[list[T]]) -> t.Iterator[tuple["Pt", T]]:
+def pts(grid: Sequence[Sequence[T]]) -> t.Iterator[tuple["Pt", T]]:
     w, h = wh(grid)
     for y, x in product(range(h), range(w)):
         p = Pt(x, y)
@@ -218,7 +235,7 @@ class Pt(t.NamedTuple):
         (ax, ay), (bx, by) = self, b
         return Pt(ax + bx, ay + by)
 
-    def get(self, grid: list[list[T]]) -> T:
+    def get(self, grid: Sequence[Sequence[T]]) -> T:
         return grid[self.y][self.x]
 
     def inbound(self, bound: tuple[int, int]) -> bool:
