@@ -1,5 +1,4 @@
 from aoc import *
-from unittest.mock import ANY
 
 
 def hash(s):
@@ -13,26 +12,20 @@ def hash(s):
 
 print(sum(hash(s) for s in data.split(",")))
 
-boxes = [deque() for _ in range(256)]
+boxes = [{} for _ in range(256)]
 
 for s in data.split(","):
     if "=" in s:
         label, f = s.split("=")
         box = boxes[hash(label)]
-        try:
-            box[box.index((label, ANY))] = (label, int(f))
-        except ValueError:
-            box.append((label, int(f)))
+        box[label] = int(f)
     else:
         label = s.removesuffix("-")
         box = boxes[hash(label)]
-        try:
-            box.remove((label, ANY))
-        except ValueError:
-            pass
+        box.pop(label, None)
 
 p = 0
 for i, box in enumerate(boxes):
-    for j, (label, f) in enumerate(box):
+    for j, (label, f) in enumerate(box.items()):
         p += (i + 1) * (j + 1) * f
 print(p)
