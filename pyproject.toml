@@ -6,7 +6,7 @@ authors = ["Patrick Gingras <775.pg.12@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 matplotlib = "^3.8.2"
 more-itertools = "^10.1.0"
 networkx = "^3.2.1"
