@@ -103,6 +103,7 @@ __all__ = [  # noqa
     "None_",
     "Ok",
     "Option",
+    "Pt",
     "Result",
     "Some",
     "add",
@@ -236,6 +237,15 @@ class Pt(t.NamedTuple):
         (ax, ay), (bx, by) = self, b
         return Pt(ax + bx, ay + by)
 
+    def __neg__(self) -> Pt:
+        return Pt(-self.x, -self.y)
+
+    def __sub__(self, b: Pt) -> Pt:
+        return self + -b
+
+    def __mul__(self, n: int) -> Pt:
+        return Pt(self.x * n, self.y * n)
+
     def get(self, grid: Sequence[Sequence[T]]) -> T:
         return grid[self.y][self.x]
 
@@ -248,6 +258,9 @@ class Pt(t.NamedTuple):
             if bound and not p.inbound(bound):
                 continue
             yield p
+
+    def unit(self) -> Pt:
+        return Pt(sign(self.x), sign(self.y))
 
 
 def __getattr__(name: str) -> t.Any:
