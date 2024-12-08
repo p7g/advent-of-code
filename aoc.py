@@ -302,8 +302,16 @@ def _get_challenge_date() -> dt.date:
     import os
 
     today = dt.date.today()
+    day = today.day
 
-    day = int(os.environ.get("AOC_DAY", today.day))
+    try:
+        if "AOC_DAY" in os.environ:
+            day = int(os.environ["AOC_DAY"])
+        elif __name__ != "__main__":
+            day = int(sys.argv[0].split(".", 1)[0])
+    except ValueError:
+        print("Failed to parse day, falling back to today", file=sys.stderr)
+
     year = int(os.environ.get("AOC_YEAR", today.year))
     return dt.date(year=year, month=12, day=day)
 
