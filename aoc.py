@@ -10,8 +10,10 @@ import re
 import string
 import sys
 import typing as t
+from bisect import bisect_left, bisect_right, insort
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
 from collections.abc import Sequence
+from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
 from functools import cmp_to_key, lru_cache, partial, reduce, total_ordering
@@ -109,6 +111,8 @@ __all__ = [  # noqa
     "add",
     "and_",
     "attrgetter",
+    "bisect_left",
+    "bisect_right",
     "cache",
     "ceil",
     "chain",
@@ -122,6 +126,7 @@ __all__ = [  # noqa
     "data",
     "dataclass",
     "dataclasses",
+    "deepcopy",
     "defaultdict",
     "deque",
     "dist",
@@ -138,6 +143,7 @@ __all__ = [  # noqa
     "heappushpop",
     "heapreplace",
     "hypot",
+    "insort",
     "intersperse",
     "islice",
     "it",
