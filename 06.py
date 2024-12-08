@@ -72,11 +72,14 @@ for (x, y), guard_pos in lines:
 
 print(len(seen))
 
+
 def simulate(obstacle_pos):
     guard_pos = globals()["guard_start"]
-    row_obstacles = deepcopy(globals()["row_obstacles"])
-    col_obstacles = deepcopy(globals()["col_obstacles"])
+    row_obstacles = globals()["row_obstacles"].copy()
+    col_obstacles = globals()["col_obstacles"].copy()
     x, y = obstacle_pos
+    row_obstacles[y] = row_obstacles[y].copy()
+    col_obstacles[x] = col_obstacles[x].copy()
     insort(row_obstacles[y], x)
     insort(col_obstacles[x], y)
 
