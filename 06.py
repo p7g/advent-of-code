@@ -74,7 +74,7 @@ print(len(seen))
 
 
 def simulate(obstacle_pos):
-    guard_pos = globals()["guard_start"]
+    guard_pos = tuple(globals()["guard_start"])
     row_obstacles = globals()["row_obstacles"].copy()
     col_obstacles = globals()["col_obstacles"].copy()
     x, y = obstacle_pos
@@ -84,64 +84,48 @@ def simulate(obstacle_pos):
     insort(col_obstacles[x], y)
 
     direction = "up"
-    seen = set()
+    turns = set()
 
-    for i in count():
+    while True:
         prev_direction = direction
         x, y = guard_pos
-        done = False
         if direction == "up":
             obstacles = col_obstacles[x]
             idx = bisect_right(obstacles, y)
             if idx == 0:
-                done = True
-                guard_pos = Pt(x, -1)
+                return False
             else:
-                guard_pos = Pt(x, obstacles[idx - 1] + 1)
+                guard_pos = (x, obstacles[idx - 1] + 1)
             direction = "right"
         elif direction == "right":
             obstacles = row_obstacles[y]
             idx = bisect_left(obstacles, x)
             if idx == len(obstacles):
-                done = True
-                guard_pos = Pt(W, y)
+                return False
             else:
-                guard_pos = Pt(obstacles[idx] - 1, y)
+                guard_pos = (obstacles[idx] - 1, y)
             direction = "down"
         elif direction == "down":
             obstacles = col_obstacles[x]
             idx = bisect_left(obstacles, y)
             if idx == len(obstacles):
-                done = True
-                guard_pos = Pt(x, H)
+                return False
             else:
-                guard_pos = Pt(x, obstacles[idx] - 1)
+                guard_pos = (x, obstacles[idx] - 1)
             direction = "left"
         elif direction == "left":
             obstacles = row_obstacles[y]
             idx = bisect_right(obstacles, x)
             if idx == 0:
-                done = True
-                guard_pos = Pt(-1, y)
+                return False
             else:
-                guard_pos = Pt(obstacles[idx - 1] + 1, y)
+                guard_pos = (obstacles[idx - 1] + 1, y)
             direction = "up"
 
-        seen.add((*guard_pos, prev_direction))
-        if guard_pos == Pt(x, y) and direction == prev_direction:
-            return False
-        if y != guard_pos.y:
-            for y in range(y, guard_pos.y, sign(guard_pos.y - y)):
-                if (x, y, prev_direction) in seen:
-                    return True
-                seen.add((x, y, prev_direction))
-        elif x != guard_pos.x:
-            for x in range(x, guard_pos.x, sign(guard_pos.x - x)):
-                if (x, y, prev_direction) in seen:
-                    return True
-                seen.add((x, y, prev_direction))
-        if done:
-            return False
+        turn = (guard_pos, direction)
+        if turn in turns:
+            return True
+        turns.add(turn)
 
 
 n = 0
