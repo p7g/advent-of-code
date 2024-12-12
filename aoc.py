@@ -266,6 +266,15 @@ class Pt(t.NamedTuple):
                 continue
             yield p
 
+    def nbrs8(self, bound: tuple[int, int] | None = None) -> t.Iterator[Pt]:
+        for dx, dy in product([-1, 0, 1], repeat=2):
+            if dx == dy == 0:
+                continue
+            p = self + (dx, dy)
+            if bound and not p.inbound(bound):
+                continue
+            yield p
+
     def unit(self) -> Pt:
         return Pt(sign(self.x), sign(self.y))
 
@@ -310,7 +319,7 @@ def _get_challenge_date() -> dt.date:
         elif __name__ != "__main__":
             day = int(sys.argv[0].split(".", 1)[0])
     except ValueError:
-        print("Failed to parse day, falling back to today", file=sys.stderr)
+        pass
 
     year = int(os.environ.get("AOC_YEAR", today.year))
     return dt.date(year=year, month=12, day=day)
