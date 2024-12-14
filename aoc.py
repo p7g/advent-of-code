@@ -253,6 +253,9 @@ class Pt(t.NamedTuple):
     def __mul__(self, n: int) -> Pt:
         return Pt(self.x * n, self.y * n)
 
+    def __mod__(self, other: Pt) -> Pt:
+        return Pt(self.x % other.x, self.y % other.y)
+
     def get(self, grid: Sequence[Sequence[T]]) -> T:
         return grid[self.y][self.x]
 
