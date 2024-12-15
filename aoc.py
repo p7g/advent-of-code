@@ -12,7 +12,7 @@ import sys
 import typing as t
 from bisect import bisect_left, bisect_right, insort
 from collections import ChainMap, Counter, defaultdict, deque, namedtuple
-from collections.abc import Sequence
+from collections.abc import MutableSequence, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
@@ -23,6 +23,7 @@ from itertools import (
     combinations,
     count,
     cycle,
+    groupby,
     islice,
     permutations,
     product,
@@ -137,6 +138,7 @@ __all__ = [  # noqa
     "freeze",
     "gcd",
     "grid_2d_graph_diag",
+    "groupby",
     "heapify",
     "heappop",
     "heappush",
@@ -208,8 +210,8 @@ def sign(n):
     return 1 if n > 0 else -1
 
 
-def wh(grid: Sequence[Sequence[t.Any]]) -> tuple[int, int]:
-    return len(grid[0]), len(grid)
+def wh(grid: Sequence[Sequence[t.Any]]) -> Pt:
+    return Pt(len(grid[0]), len(grid))
 
 
 def grid_2d_graph_diag(w: int, h: int) -> "nx.Graph":
@@ -253,11 +255,20 @@ class Pt(t.NamedTuple):
     def __mul__(self, n: int) -> Pt:
         return Pt(self.x * n, self.y * n)
 
+    def __rmul__(self, n: int) -> Pt:
+        return self * n
+
     def __mod__(self, other: Pt) -> Pt:
         return Pt(self.x % other.x, self.y % other.y)
 
+    def __rmatmul__(self, grid: Sequence[Sequence[T]]) -> T:
+        return self.get(grid)
+
     def get(self, grid: Sequence[Sequence[T]]) -> T:
         return grid[self.y][self.x]
+
+    def set(self, grid: Sequence[MutableSequence[T]], val: T) -> None:
+        grid[self.y][self.x] = val
 
     def inbound(self, bound: tuple[int, int]) -> bool:
         x, y = self
