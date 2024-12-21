@@ -111,7 +111,6 @@ static struct pt heappop(struct heap *heap);
 static void heapdecpriority(struct heap *heap, struct pt pt, int priority);
 
 static void compute_shortest_path_lengths(char *grid, unsigned *dist, struct pt src) {
-	static struct pt prev[W * W];
 	static struct heap Q;
 
 	heapinit(&Q);
@@ -122,7 +121,6 @@ static void compute_shortest_path_lengths(char *grid, unsigned *dist, struct pt 
 		for (int x = 0; x < W; x += 1) {
 			if (x == src.x && y == src.y)
 				continue;
-			prev[idx(x, y)] = (struct pt) {-1, -1};
 			dist[idx(x, y)] = INT_MAX;
 			heappush(&Q, (struct pt){x, y}, INT_MAX);
 		}
@@ -136,7 +134,6 @@ static void compute_shortest_path_lengths(char *grid, unsigned *dist, struct pt 
 	if (grid[grid_idx(x, y)] == '#') break; \
 	int alt = dist[ptidx(u)] + 1; \
 	if (alt < dist[idx(x, y)]) { \
-		prev[idx(x, y)] = u; \
 		dist[idx(x, y)] = alt; \
 		heapdecpriority(&Q, (struct pt) {x, y}, alt); \
 	} \
