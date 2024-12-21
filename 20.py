@@ -17,9 +17,10 @@ for pt, c in pts(grid):
     elif c == "E":
         END = pt
 
-base_time = nx.shortest_path_length(G, START, END)
+distance_from_start = nx.single_source_shortest_path_length(G, START)
+distance_from_end = nx.single_source_shortest_path_length(G, END)
+base_time = distance_from_start[END]
 path_pts = [tuple(pt) for pt, c in pts(grid) if c != "#"]
-shortest_path_length = cache(nx.shortest_path_length)
 
 
 def pt_pairs():
@@ -32,9 +33,9 @@ def pt_pairs():
 s = s2 = 0
 for A, B, d in pt_pairs():
     dtotal = (
-        shortest_path_length(G, START, A)
+        distance_from_start[A]
         + d
-        + shortest_path_length(G, B, END)
+        + distance_from_end[B]
     )
     if dtotal >= base_time:
         continue
