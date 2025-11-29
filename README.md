@@ -1,7 +1,8 @@
 # Advent of code solutions
 
-This branch has solutions for 2024, for other years see the other branches:
+This branch has solutions for 2025, for other years see the other branches:
 
+- [2024](https://github.com/p7g/advent-of-code/tree/2024)
 - [2023](https://github.com/p7g/advent-of-code/tree/2023)
 - [2022](https://github.com/p7g/advent-of-code/tree/2022)
 - [2021](https://github.com/p7g/advent-of-code/tree/2021)
@@ -10,7 +11,7 @@ This branch has solutions for 2024, for other years see the other branches:
 
 ## Instructions if you wanna use aoc.py
 
-1. Set up a Python virtual environment and install the dependencies with `python -m pip install -r requirements.txt`
+1. Set up a Python virtual environment and install the dependencies with `uv install`
 2. Grab the cookie named "session" from adventofcode.com after you've signed in and put that in a file called .aoc-session
 3. Name your solution files like 01.py (zero-padded to 2 digits)
 4. Optionally `from aoc import *` in your solutions to import the prelude
