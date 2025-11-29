@@ -226,10 +226,10 @@ class Pt(t.NamedTuple):
     def __sub__(self, b: Pt) -> Pt:
         return self + -b
 
-    def __mul__(self, n: int) -> Pt:
-        return Pt(self.x * n, self.y * n)
+    def __mul__(self, n: t.SupportsIndex) -> Pt:
+        return Pt(self.x * int(n), self.y * int(n))
 
-    def __rmul__(self, n: int) -> Pt:
+    def __rmul__(self, n: t.SupportsIndex) -> Pt:
         return self * n
 
     def __mod__(self, other: Pt) -> Pt:

@@ -10,7 +10,12 @@ dependencies = [
     "networkx>=3.4.2,<4",
     "numpy>=2.1.3,<3",
     "requests>=2.32.3,<3",
+]
+
+[dependency-groups]
+dev = [
     "ruff>=0.14.7",
+    "ty>=0.0.1a29",
 ]
 
 [build-system]
@@ -66,3 +71,11 @@ ignore = [
 inline-quotes = "double"
 multiline-quotes = "double"
 docstring-quotes = "double"
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.rules]
+division-by-zero = "warn"
+possibly-unresolved-reference = "warn"
+unused-ignore-comment = "warn"
