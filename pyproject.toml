@@ -19,3 +19,53 @@ dependencies = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py314"
+preview = true
+
+[tool.ruff.lint]
+select = [
+    "E",       # pycodestyle
+    "W",       # pycodestyle
+    "F",       # pyflakes
+    "I",       # isort
+    "S",       # flake8-bandit
+    "B",       # flake8-bugbear
+    "T10",     # flake8-debugger
+    "T20",     # flake8-print
+    "TID",     # flake8-tidy-imports
+    "UP",      # pyupgrade
+    "G",       # flake8-logging-format
+    "PYI055",  # unnecessary-type-union
+    "B032",    # unintentional-type-annotation
+    "PLC0132", # type-param-name-mismatch
+    "UP003",   # type-of-primitive
+    "E721",    # type-comparison
+    "PLE0307", # invalid-str-return-type
+    "RUF016",  # invalid-index-type
+    "Q000",    # bad-quotes-inline-string
+    "Q001",    # bad-quotes-multiline-string
+    "Q002",    # bad-quotes-docstring
+    "Q003",    # avoidable-escaped-quote
+    "DTZ001",  # call-datetime-without-tzinfo
+    "DTZ002",  # call-datetime-today
+    "DTZ003",  # call-datetime-utcnow
+    "DTZ004",  # call-datetime-utcfromtimestamp
+    "DTZ005",  # call-datetime-now-without-tzinfo
+    "DTZ006",  # call-datetime-fromtimestamp
+    "DTZ007",  # call-datetime-strptime-without-zone
+    "DTZ011",  # call-date-today
+    "DTZ012",  # call-date-fromtimestamp
+    "C4",      # flake8-comprehensions
+    "COM818",  # trailing-comma-on-bare-tuple
+]
+ignore = [
+    "E501", # line-too-long (formatter deals with it)
+    "S101", # assert-used
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+multiline-quotes = "double"
+docstring-quotes = "double"

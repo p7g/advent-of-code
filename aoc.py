@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-from __future__ import annotations
-
 import dataclasses
-import os
-import more_itertools as it
 import operator as op
+import os
 import re
 import string
 import sys
@@ -16,7 +13,7 @@ from collections.abc import MutableSequence, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
-from functools import cmp_to_key, lru_cache, partial, reduce, total_ordering
+from functools import cache, cmp_to_key, partial, reduce, total_ordering
 from heapq import heapify, heappop, heappush, heappushpop, heapreplace
 from itertools import (
     chain,
@@ -30,7 +27,38 @@ from itertools import (
     repeat,
     zip_longest,
 )
-from math import ceil, cos, cosh, floor, gcd, hypot, log10, sin, sinh, sqrt, tan, tanh
+from math import (
+    ceil,
+    cos,
+    cosh,
+    dist,
+    floor,
+    gcd,
+    hypot,
+    lcm,
+    log10,
+    sin,
+    sinh,
+    sqrt,
+    tan,
+    tanh,
+)
+from operator import (
+    add,
+    and_,
+    attrgetter,
+    floordiv,
+    itemgetter,
+    methodcaller,
+    mod,
+    mul,
+    or_,
+    sub,
+    truediv,
+    xor,
+)
+
+import more_itertools as it
 from more_itertools import (
     chunked,
     first,
@@ -51,54 +79,18 @@ from more_itertools import (
     triplewise,
     windowed,
 )
-from operator import (
-    add,
-    and_,
-    attrgetter,
-    floordiv,
-    itemgetter,
-    methodcaller,
-    mod,
-    mul,
-    or_,
-    sub,
-    truediv,
-    xor,
-)
 from patina import Err, None_, Ok, Option, Result, Some
 from pyrsistent import freeze, pbag, pdeque, pmap, pset, pvector, thaw
 
 if t.TYPE_CHECKING:
     import datetime as dt
+
     import networkx as nx
-
-try:
-    from math import dist
-except ImportError:
-
-    def dist(ns):
-        raise NotImplementedError
-
-
-try:
-    from math import lcm
-except ImportError:
-
-    def lcm(*integers: t.SupportsIndex) -> int:
-        return abs(reduce(op.mul, integers)) // gcd(*integers)
-
-
-try:
-    from functools import cache
-except ImportError:
-
-    def cache(fn):
-        return lru_cache(None)(fn)
 
 
 data: str
 
-__all__ = [  # noqa
+__all__ = [
     "ChainMap",
     "Counter",
     "Enum",
@@ -214,7 +206,7 @@ def wh(grid: Sequence[Sequence[t.Any]]) -> Pt:
     return Pt(len(grid[0]), len(grid))
 
 
-def grid_2d_graph_diag(w: int, h: int) -> "nx.Graph":
+def grid_2d_graph_diag(w: int, h: int) -> nx.Graph:
     import networkx as nx
 
     G = nx.grid_2d_graph(w, h)
@@ -226,10 +218,7 @@ def grid_2d_graph_diag(w: int, h: int) -> "nx.Graph":
     return G
 
 
-T = t.TypeVar("T")
-
-
-def pts(grid: Sequence[Sequence[T]]) -> t.Iterator[tuple["Pt", T]]:
+def pts[T](grid: Sequence[Sequence[T]]) -> t.Iterator[tuple[Pt, T]]:
     w, h = wh(grid)
     for y, x in product(range(h), range(w)):
         p = Pt(x, y)
@@ -261,13 +250,13 @@ class Pt(t.NamedTuple):
     def __mod__(self, other: Pt) -> Pt:
         return Pt(self.x % other.x, self.y % other.y)
 
-    def __rmatmul__(self, grid: Sequence[Sequence[T]]) -> T:
+    def __rmatmul__[T](self, grid: Sequence[Sequence[T]]) -> T:
         return self.get(grid)
 
-    def get(self, grid: Sequence[Sequence[T]]) -> T:
+    def get[T](self, grid: Sequence[Sequence[T]]) -> T:
         return grid[self.y][self.x]
 
-    def set(self, grid: Sequence[MutableSequence[T]], val: T) -> None:
+    def set[T](self, grid: Sequence[MutableSequence[T]], val: T) -> None:
         grid[self.y][self.x] = val
 
     def inbound(self, bound: tuple[int, int]) -> bool:
@@ -301,12 +290,11 @@ def __getattr__(name: str) -> t.Any:
 
 
 def _main() -> None:
+    import runpy
+
     date = _get_challenge_date()
     script_path = _challenge_script_name(date)
-    with open(script_path, "r") as f:
-        script_src = f.read()
-    code = compile(source=script_src, filename=script_path, mode="exec")
-    exec(code, {}, {})
+    runpy.run_path(script_path)
 
 
 def _challenge_script_name(date: dt.date) -> str:
@@ -316,15 +304,16 @@ def _challenge_script_name(date: dt.date) -> str:
 
 
 def _read_session() -> str:
-    with open(".aoc-session", "r") as f:
+    with open(".aoc-session") as f:
         return f.read().strip()
 
 
 def _get_challenge_date() -> dt.date:
-    import datetime as dt
     import os
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
 
-    today = dt.date.today()
+    today = datetime.now(tz=ZoneInfo("America/New_York")).date()
     day = today.day
 
     try:
@@ -341,7 +330,7 @@ def _get_challenge_date() -> dt.date:
 
 def _fetch_input_cached(date: dt.date) -> str:
     try:
-        with open(_input_cache_path(date), "r") as f:
+        with open(_input_cache_path(date)) as f:
             return f.read().strip("\r\n")
     except FileNotFoundError:
         pass
@@ -365,6 +354,7 @@ def _fetch_input(date: dt.date) -> str:
     req = requests.get(
         f"https://adventofcode.com/{date.year}/day/{date.day}/input",
         cookies={"session": _read_session()},
+        timeout=10,
     )
     req.raise_for_status()
     return req.content.decode("ascii")
