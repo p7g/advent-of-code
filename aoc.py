@@ -79,8 +79,6 @@ from more_itertools import (
     triplewise,
     windowed,
 )
-from patina import Err, None_, Ok, Option, Result, Some
-from pyrsistent import freeze, pbag, pdeque, pmap, pset, pvector, thaw
 
 if t.TYPE_CHECKING:
     import datetime as dt
@@ -94,13 +92,7 @@ __all__ = [
     "ChainMap",
     "Counter",
     "Enum",
-    "Err",
-    "None_",
-    "Ok",
-    "Option",
     "Pt",
-    "Result",
-    "Some",
     "add",
     "and_",
     "attrgetter",
@@ -127,7 +119,6 @@ __all__ = [
     "flatten",
     "floor",
     "floordiv",
-    "freeze",
     "gcd",
     "grid_2d_graph_diag",
     "groupby",
@@ -161,15 +152,10 @@ __all__ = [
     "pairwise",
     "partial",
     "partition",
-    "pbag",
-    "pdeque",
     "peekable",
     "permutations",
-    "pmap",
     "product",
-    "pset",
     "pts",
-    "pvector",
     "re",
     "reduce",
     "repeat",
@@ -185,7 +171,6 @@ __all__ = [
     "take",
     "tan",
     "tanh",
-    "thaw",
     "total_ordering",
     "triplewise",
     "truediv",
