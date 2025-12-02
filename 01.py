@@ -14,7 +14,7 @@ print(z)
 
 z = 0
 v = 50
-for i, n in enumerate(ns):
+for n in ns:
     if n > 0:
         x, v = divmod(v + n, 100)
         z += x
