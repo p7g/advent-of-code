@@ -81,7 +81,7 @@ from more_itertools import (
 )
 
 if t.TYPE_CHECKING:
-    import datetime as dt
+    from datetime import date
 
     import networkx as nx
 
@@ -282,7 +282,7 @@ def _main() -> None:
     runpy.run_path(script_path)
 
 
-def _challenge_script_name(date: dt.date) -> str:
+def _challenge_script_name(date: date) -> str:
     from pathlib import Path
 
     return str(Path(__file__).parent / f"{date.day:02}.py")
@@ -293,9 +293,9 @@ def _read_session() -> str:
         return f.read().strip()
 
 
-def _get_challenge_date() -> dt.date:
+def _get_challenge_date() -> date:
     import os
-    from datetime import datetime
+    from datetime import date, datetime
     from zoneinfo import ZoneInfo
 
     today = datetime.now(tz=ZoneInfo("America/New_York")).date()
@@ -310,10 +310,10 @@ def _get_challenge_date() -> dt.date:
         pass
 
     year = int(os.environ.get("AOC_YEAR", today.year))
-    return dt.date(year=year, month=12, day=day)
+    return date(year=year, month=12, day=day)
 
 
-def _fetch_input_cached(date: dt.date) -> str:
+def _fetch_input_cached(date: date) -> str:
     try:
         with open(_input_cache_path(date)) as f:
             return f.read().strip("\r\n")
@@ -324,7 +324,7 @@ def _fetch_input_cached(date: dt.date) -> str:
     return input_data
 
 
-def _input_cache_path(date: dt.date) -> str:
+def _input_cache_path(date: date) -> str:
     from pathlib import Path
 
     cache_dir = Path(__file__).parent / ".aoc-cache"
@@ -333,7 +333,7 @@ def _input_cache_path(date: dt.date) -> str:
     return str(cache_dir / f"{date.year}-{date.day}.txt")
 
 
-def _fetch_input(date: dt.date) -> str:
+def _fetch_input(date: date) -> str:
     import requests
 
     req = requests.get(
@@ -345,7 +345,7 @@ def _fetch_input(date: dt.date) -> str:
     return req.content.decode("ascii")
 
 
-def _cache_input(date: dt.date, aoc_input: str) -> None:
+def _cache_input(date: date, aoc_input: str) -> None:
     with open(_input_cache_path(date), "w") as f:
         f.write(aoc_input)
 
