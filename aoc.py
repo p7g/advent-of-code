@@ -13,6 +13,7 @@ from collections.abc import MutableSequence, Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
+from fractions import Fraction
 from functools import cache, cmp_to_key, partial, reduce, total_ordering
 from heapq import heapify, heappop, heappush, heappushpop, heapreplace
 from itertools import (
@@ -92,7 +93,9 @@ __all__ = [
     "ChainMap",
     "Counter",
     "Enum",
+    "Fraction",
     "Pt",
+    "Sequence",
     "add",
     "and_",
     "attrgetter",
